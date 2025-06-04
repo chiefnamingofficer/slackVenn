@@ -6,7 +6,7 @@ Complete step-by-step instructions for setting up slackVenn to analyze Slack cha
 
 ```bash
 # 1. Clone and setup
-git clone <repository-url>
+git clone git@github.com:chiefnamingofficer/slackVenn.git
 cd slackVenn
 
 # 2. Install dependencies
@@ -17,13 +17,12 @@ cp env/.env.example env/.env
 # Edit env/.env with your Slack token
 
 # 4. Test the setup
-source scripts/load-env.sh
 ./slackVenn.sh --dry-run C1234567890 C0987654321
 ```
 
 ## 📋 Prerequisites
 
-- **Go 1.24+** - [Download Go](https://golang.org/dl/)
+- **Go 1.21+** - [Download Go](https://golang.org/dl/)
 - **Slack Workspace Access** - Admin or app management permissions
 - **Basic terminal/command line knowledge**
 
@@ -137,21 +136,27 @@ slackVenn/
 │   ├── .env.example         #   Template for environment variables
 │   └── .env                 #   Your actual environment (gitignored)
 ├── scripts/                 # Utility scripts
-│   └── load-env.sh         #   Environment loader script
+│   ├── load-env.sh         #   Environment loader script
+│   └── run-tests.sh        #   Test suite runner
 ├── docs/                    # Documentation
 │   └── SETUP.md            #   This setup guide
 ├── tests/                   # Test suite
 │   ├── main_test.go        #   Unit tests
 │   ├── mock_test.go        #   Mock tests
-│   └── README.md           #   Test documentation
-├── history/                 # Generated comparison results
+│   ├── README.md           #   Test documentation
+│   └── results/            #   Test outputs (gitignored)
+│       ├── .gitkeep        #     Preserves directory structure
+│       ├── *_YYYYMMDD_HHMMSS.*  #  Timestamped test files
+│       └── latest-*        #     Symlinks to latest results
+├── history/                 # Generated comparison results (gitignored)
+│   ├── .gitkeep            #   Preserves directory structure
 │   └── *.csv               #   Timestamped comparison files
 ├── main.go                  # Core comparison logic
 ├── slackVenn.sh            # Shell script wrapper
 ├── go.mod                   # Go module definition
 ├── go.sum                   # Go module checksums
 ├── .gitignore              # Git ignore rules
-├── CURRENT                 # Symlink to latest result
+├── CURRENT                 # Symlink to latest result (gitignored)
 └── README.md               # Main project documentation
 ```
 
@@ -226,16 +231,25 @@ chmod +x scripts/run-tests.sh
 
 ## 🧪 Testing
 
-slackVenn includes a comprehensive test suite:
+slackVenn includes a comprehensive test suite with timestamped results:
 
 ```bash
-# Run all tests
+# Run all tests with coverage and benchmarks
 ./scripts/run-tests.sh
 
 # Run specific test types
 go test ./tests/                    # Unit tests only
 go test -bench=. ./tests/          # Benchmarks only
+go test -v -run TestMock ./tests/  # Mock tests only
 ```
+
+**📊 Test features:**
+- Unit tests with edge case coverage
+- Mock tests with realistic Slack data
+- Performance benchmarks for large channels
+- Integration tests with dry-run validation
+- Timestamped results prevent overwriting
+- HTML coverage reports with line-by-line analysis
 
 **📖 Complete testing guide: [tests/README.md](../tests/README.md)**
 
