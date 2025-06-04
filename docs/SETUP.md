@@ -76,7 +76,7 @@ source scripts/load-env.sh
 
 3. **Add your token:**
    ```bash
-   SLACK_TOKEN=xoxb-1234567890-1234567890123-abcdefghijklmnopqrstuvwx
+   SLACK_TOKEN=xoxb-your-slack-bot-token-here
    ```
 
 ## 🚀 Usage
